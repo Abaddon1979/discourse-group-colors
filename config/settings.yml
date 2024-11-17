@@ -1,19 +1,15 @@
 # config/settings.yml
 
-group_colors_enabled:
-  default: true
-  client: true
-  type: bool
-  description: "Enable group colors plugin"
-
-group_colors_hover_enabled:
-  default: true
-  client: true
-  type: bool
-  description: "Enable hover cards for colored usernames"
-
-group_colors_priority_enabled:
-  default: true
-  client: true
-  type: bool
-  description: "Enable priority system for group colors"
+plugins:
+  group_colors_enabled:
+    type: bool
+    default: true
+    client: true
+  group_colors_hover_enabled:
+    type: bool
+    default: true
+    client: true
+  group_colors_priority_enabled:
+    type: bool
+    default: true
+    client: true

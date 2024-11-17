@@ -4,13 +4,12 @@ import { action } from "@ember/object";
 import { inject as service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import { tracked } from "@glimmer/tracking";
 import Sortable from "discourse/lib/sortable";
 
 export default class AdminPluginsGroupColorsController extends Controller {
   @service siteSettings;
   @service store;
-  @tracked sortableInstance;
+  sortableInstance = null;
 
   constructor() {
     super(...arguments);
@@ -34,11 +33,10 @@ export default class AdminPluginsGroupColorsController extends Controller {
   }
 
   setupSortable() {
-    if (this.sortableInstance) {
-      this.sortableInstance.destroy();
-    }
+    const element = document.querySelector(".groups-list");
+    if (!element) return;
 
-    this.sortableInstance = new Sortable(document.querySelector(".groups-list"), {
+    this.sortableInstance = new Sortable(element, {
       handle: ".group-sort-handle",
       draggable: ".sortable-group",
       onEnd: this.updateOrder.bind(this)
@@ -76,7 +74,6 @@ export default class AdminPluginsGroupColorsController extends Controller {
       this.flash(I18n.t("group_colors.order_saved"), "success");
     } catch (error) {
       popupAjaxError(error);
-      // Reload groups to reset order
       this.loadGroups();
     }
   }
