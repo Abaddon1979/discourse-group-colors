@@ -1,0 +1,4 @@
+// config/locales/server.en.yml
+en:
+  site_settings:
+    group_colors_enabled: "Enable group colors plugin"

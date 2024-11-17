@@ -1,0 +1,10 @@
+# config/locales/client.en.yml
+en:
+  js:
+    group_colors:
+      title: "Group Colors"
+      rank_label: "Priority Rank"
+      rank_placeholder: "Enter rank (1 = highest priority)"
+      save_success: "Group colors saved successfully"
+      save_error: "Error saving group colors"
+      load_error: "Error loading groups"
