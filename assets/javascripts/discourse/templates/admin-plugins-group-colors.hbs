@@ -1,29 +1,29 @@
 {{!-- assets/javascripts/discourse/templates/admin-plugins-group-colors.hbs --}}
 <div class="group-colors-admin">
-  <h2>{{i18n "group_colors.title"}}</h2>
-  {{
+<h2>{{i18n "group_colors.title"}}</h2>
+{{
 #if
  this.groups}}
-    <div class="groups-list">
-      {{
+<div class="groups-list">
+{{
 #each
  this.groups as |group|}}
-        <div class="group-row">
-          <div class="group-name">{{group.name}}</div>
-          <div class="group-color">
-            <ColorInput @value={{group.color}} @onChange={{this.updateGroupColor}} />
-          </div>
-          <div class="group-rank">
-            <Input @type="number" @value={{group.color_rank}} @input={{this.updateGroupRank}} min="1" />
-          </div>
-        </div>
-      {{
+<div class="group-row">
+<div class="group-name">{{group.name}}</div>
+<div class="group-color">
+<ColorInput @value={{group.color}} @onChange={{this.updateGroupColor}}/>
+</div>
+<div class="group-rank">
+<Input @type="number" @value={{group.color_rank}} @input={{this.updateGroupRank}} min="1"/>
+</div>
+</div>
+{{
 /each
 }}
-    </div>
-  {{else}}
-    <p>{{i18n "group_colors.no_groups"}}</p>
-  {{
+</div>
+{{else}}
+<p>{{i18n "group_colors.no_groups"}}</p>
+{{
 /if
 }}
 </div>
