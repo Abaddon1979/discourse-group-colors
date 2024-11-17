@@ -4,10 +4,13 @@ import { action } from "@ember/object";
 import { inject as service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
+import { tracked } from "@glimmer/tracking";
+import Sortable from "discourse/lib/sortable";
 
 export default class AdminPluginsGroupColorsController extends Controller {
   @service siteSettings;
   @service store;
+  @tracked sortableInstance;
 
   constructor() {
     super(...arguments);
@@ -18,15 +21,68 @@ export default class AdminPluginsGroupColorsController extends Controller {
     try {
       const groups = await this.store.findAll('group');
       this.set('groups', groups);
+      this.setupSortable();
     } catch (error) {
       popupAjaxError(error);
     }
   }
 
+  get sortedGroups() {
+    return this.groups?.toArray().sort((a, b) => {
+      return (a.custom_fields.color_rank || 999) - (b.custom_fields.color_rank || 999);
+    });
+  }
+
+  setupSortable() {
+    if (this.sortableInstance) {
+      this.sortableInstance.destroy();
+    }
+
+    this.sortableInstance = new Sortable(document.querySelector(".groups-list"), {
+      handle: ".group-sort-handle",
+      draggable: ".sortable-group",
+      onEnd: this.updateOrder.bind(this)
+    });
+  }
+
+  @action
+  async updateOrder(event) {
+    const groups = [...document.querySelectorAll(".sortable-group")];
+    const newOrder = groups.map((element, index) => ({
+      id: element.dataset.groupId,
+      rank: index + 1
+    }));
+
+    try {
+      await Promise.all(
+        newOrder.map(({ id, rank }) =>
+          ajax(`/groups/${id}/color`, {
+            type: "PUT",
+            data: {
+              color_rank: rank
+            }
+          })
+        )
+      );
+
+      // Update local ranks
+      newOrder.forEach(({ id, rank }) => {
+        const group = this.groups.findBy('id', id);
+        if (group) {
+          group.set('custom_fields.color_rank', rank);
+        }
+      });
+
+      this.flash(I18n.t("group_colors.order_saved"), "success");
+    } catch (error) {
+      popupAjaxError(error);
+      // Reload groups to reset order
+      this.loadGroups();
+    }
+  }
+
   @action
   async updateGroupColor(group, color) {
-    if (!this.siteSettings.group_colors_enabled) return;
-
     try {
       await ajax(`/groups/${group.id}/color`, {
         type: "PUT",
@@ -35,7 +91,6 @@ export default class AdminPluginsGroupColorsController extends Controller {
           color_rank: group.custom_fields.color_rank
         }
       });
-      
       group.set('custom_fields.color', color);
       this.flash(I18n.t("group_colors.save_success"), "success");
     } catch (error) {
@@ -43,26 +98,10 @@ export default class AdminPluginsGroupColorsController extends Controller {
     }
   }
 
-  @action
-  async updateGroupRank(group, event) {
-    if (!this.siteSettings.group_colors_enabled || !this.siteSettings.group_colors_priority_enabled) return;
-
-    const rank = parseInt(event.target.value, 10);
-    if (rank > 0) {
-      try {
-        await ajax(`/groups/${group.id}/color`, {
-          type: "PUT",
-          data: {
-            color: group.custom_fields.color,
-            color_rank: rank
-          }
-        });
-        
-        group.set('custom_fields.color_rank', rank);
-        this.flash(I18n.t("group_colors.save_success"), "success");
-      } catch (error) {
-        popupAjaxError(error);
-      }
+  willDestroy() {
+    super.willDestroy(...arguments);
+    if (this.sortableInstance) {
+      this.sortableInstance.destroy();
     }
   }
 }
