@@ -6,15 +6,6 @@ export default {
   name: "group-colors",
   initialize() {
     withPluginApi("0.8.31", api => {
-      // Register route in admin interface
-      api.addPluginAdminRoute("group-colors", {
-        setupRoute(router) {
-          router.route("group-colors", { path: "/group-colors", resetNamespace: true }, function() {
-            this.route("index", { path: "/" });
-          });
-        }
-      });
-
       // Apply colors to post usernames
       api.decorateWidget('poster-name:after', helper => {
         const user = helper.attrs.user;
