@@ -1,63 +1,10 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import { iconHTML } from "discourse-common/lib/icon-library";
 
 export default {
   name: "group-colors",
   initialize() {
     withPluginApi("0.8.31", api => {
-      // Add admin menu item
-      api.addAdminMenu("group-colors", {
-        route: "adminPlugins.groupColors",
-        label: "group_colors.title",
-        title: "group_colors.title",
-        icon: "paint-brush"
-      });
-
-      // Chat message username colors
-      api.modifyClass('component:chat-message', {
-        pluginId: 'discourse-group-colors',
-        
-        didInsertElement() {
-          this._super(...arguments);
-          this._applyUserColor();
-          this._setupHover();
-        },
-
-        _applyUserColor() {
-          const user = this.message?.user;
-          if (user?.group_color) {
-            const username = this.element?.querySelector('.chat-message-info__username');
-            if (username) {
-              username.style.color = user.group_color;
-            }
-          }
-        },
-
-        _setupHover() {
-          const username = this.element?.querySelector('.chat-message-info__username');
-          if (!username) return;
-
-          // Remove data-user-card attribute and add our own hover behavior
-          const userId = username.getAttribute('data-user-card');
-          if (userId) {
-            username.removeAttribute('data-user-card');
-            
-            username.addEventListener('mouseenter', async () => {
-              const rect = username.getBoundingClientRect();
-              const appEvents = this.chat.appEvents;
-              
-              appEvents.trigger('user-card:show', {
-                user: this.message.user,
-                username: userId,
-                target: username,
-                cardTarget: rect
-              });
-            });
-          }
-        }
-      });
-
-      // Forum username colors
+      // For forum usernames
       api.decorateWidget('poster-name:after', helper => {
         const user = helper.attrs.user;
         if (user?.group_color) {
@@ -74,7 +21,32 @@ export default {
         }
       });
 
-      // User card styles and hovering
+      // For chat usernames
+      api.modifyClass('component:chat-message', {
+        pluginId: 'discourse-group-colors',
+        
+        didInsertElement() {
+          this._super(...arguments);
+          this._applyUserColor();
+        },
+
+        didUpdateAttrs() {
+          this._super(...arguments);
+          this._applyUserColor();
+        },
+
+        _applyUserColor() {
+          const user = this.message?.user;
+          if (user?.group_color) {
+            const username = this.element?.querySelector('.chat-message-info__username');
+            if (username) {
+              username.style.color = user.group_color;
+            }
+          }
+        }
+      });
+
+      // For user cards
       api.modifyClass('component:user-card-contents', {
         pluginId: 'discourse-group-colors',
         
