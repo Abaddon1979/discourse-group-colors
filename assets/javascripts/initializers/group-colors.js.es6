@@ -1,4 +1,4 @@
-// assets/javascripts/initializers/group-colors.js.es6
+// assets/javascripts/discourse/initializers/group-colors.js.es6
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { iconHTML } from "discourse-common/lib/icon-library";
 
@@ -6,11 +6,12 @@ export default {
   name: "group-colors",
   initialize() {
     withPluginApi("0.8.31", api => {
-      // Add admin route
-      api.addAdminRoute('plugins.group-colors', {
-        path: '/plugins/group-colors',
-        label: 'group_colors.title',
-        icon: 'paint-brush'
+      // Add admin menu item
+      api.registerAdminMenu("group-colors", {
+        name: "group_colors.title",
+        location: "plugins",
+        icon: "paint-brush",
+        route: "adminPlugins.group-colors"
       });
 
       // Apply colors to post usernames
@@ -134,44 +135,26 @@ export default {
       });
 
       // Add group list to user cards
-      api.reopenWidget('user-card-contents', {
-        html(attrs) {
-          const contents = this._super(attrs);
-          
-          if (attrs.user?.groups) {
-            const groupList = attrs.user.groups.map(group => {
-              return this.attach('group-list-item', {
-                name: group.name,
-                color: group.color,
-                rank: group.rank
-              });
-            });
+      api.decorateWidget('user-card-contents:after', helper => {
+        const user = helper.attrs.user;
+        if (!user?.groups) return;
 
-            contents.push(
-              this.h('div.user-card-groups', [
-                this.h('h3', I18n.t('group_colors.groups_label')),
-                this.h('ul.groups-list', groupList)
+        return helper.h('div.user-card-groups', [
+          helper.h('h3', I18n.t('group_colors.groups_label')),
+          helper.h('ul.groups-list', 
+            user.groups.map(group => 
+              helper.h('li.group-list-item', [
+                helper.h('span.group-name', {
+                  style: `color: ${group.color || 'inherit'}`
+                }, [
+                  iconHTML('users'),
+                  ` ${group.name} `,
+                  group.rank ? `(${I18n.t('group_colors.rank')}: ${group.rank})` : ''
+                ])
               ])
-            );
-          }
-
-          return contents;
-        }
-      });
-
-      // Create widget for group list items
-      api.createWidget('group-list-item', {
-        tagName: 'li.group-list-item',
-
-        html(attrs) {
-          return this.h('span.group-name', {
-            style: `color: ${attrs.color || 'inherit'}`
-          }, [
-            iconHTML('users'),
-            ` ${attrs.name} `,
-            attrs.rank ? `(${I18n.t('group_colors.rank')}: ${attrs.rank})` : ''
-          ]);
-        }
+            )
+          )
+        ]);
       });
 
       // Add hover styles
