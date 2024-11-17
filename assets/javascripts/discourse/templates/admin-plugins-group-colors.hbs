@@ -1,47 +1,26 @@
 {{!-- assets/javascripts/discourse/templates/admin-plugins-group-colors.hbs --}}
 <div class="group-colors-admin">
   <h2>{{i18n "group_colors.title"}}</h2>
-  <p class="description">{{i18n "group_colors.description"}}</p>
   {{
 #if
  this.groups}}
-    <table class="group-colors-table">
-      <thead>
-        <tr>
-          <th>{{i18n "group_colors.group_name"}}</th>
-          <th>{{i18n "group_colors.color"}}</th>
-          <th>{{i18n "group_colors.rank"}}</th>
-          <th>{{i18n "group_colors.preview"}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{
+    <div class="groups-list">
+      {{
 #each
  this.groups as |group|}}
-          <tr class="group-row">
-            <td class="group-name">{{group.name}}</td>
-            <td class="group-color">
-              <ColorInput @value={{group.color}} @onChange={{fn this.updateGroupColor group}} />
-            </td>
-            <td class="group-rank">
-              <Input 
-                @type="number" 
-                @value={{group.color_rank}} 
-                @input={{fn this.updateGroupRank group}} 
-                min="1" 
-                placeholder="1" 
-                class="rank-input" 
-              />
-            </td>
-            <td class="group-preview">
-              <span style={{html-safe (concat "color: " group.color)}}>{{group.name}}</span>
-            </td>
-          </tr>
-        {{
+        <div class="group-row">
+          <div class="group-name">{{group.name}}</div>
+          <div class="group-color">
+            <ColorInput @value={{group.color}} @onChange={{this.updateGroupColor}} />
+          </div>
+          <div class="group-rank">
+            <Input @type="number" @value={{group.color_rank}} @input={{this.updateGroupRank}} min="1" />
+          </div>
+        </div>
+      {{
 /each
 }}
-      </tbody>
-    </table>
+    </div>
   {{else}}
     <p>{{i18n "group_colors.no_groups"}}</p>
   {{
