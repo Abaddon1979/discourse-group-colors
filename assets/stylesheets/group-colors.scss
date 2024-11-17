@@ -1,0 +1,60 @@
+// assets/stylesheets/group-colors.scss
+.user-card {
+  transition: opacity 0.3s ease;
+  z-index: 999;
+}
+
+.user-card-groups {
+  margin-top: 1em;
+  padding: 1em;
+  border-top: 1px solid var(--primary-low);
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 0.5em 0;
+    font-weight: 500;
+  }
+}
+
+.chat-message-info__username {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.group-colors-admin {
+  padding: 1em;
+
+  .groups-list {
+    display: grid;
+    gap: 1em;
+    margin-top: 1em;
+  }
+
+  .group-color-setting {
+    border: 1px solid var(--primary-low);
+    padding: 1em;
+    border-radius: 4px;
+
+    h3 {
+      margin: 0 0 1em 0;
+    }
+
+    .color-picker, .rank-input {
+      margin: 0.5em 0;
+      
+      label {
+        display: block;
+        margin-bottom: 0.5em;
+      }
+    }
+  }
+}

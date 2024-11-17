@@ -1,12 +1,65 @@
 // assets/javascripts/discourse/initializers/group-colors.js.es6
 import { withPluginApi } from "discourse/lib/plugin-api";
-import { iconHTML } from "discourse-common/lib/icon-library";
 
 export default {
   name: "group-colors",
   initialize() {
     withPluginApi("0.8.31", api => {
-      // Apply colors to post usernames
+      // Chat message username colors
+      api.modifyClass('component:chat-message', {
+        pluginId: 'discourse-group-colors',
+        
+        didInsertElement() {
+          this._super(...arguments);
+          this._applyUserColor();
+          this._setupHoverBehavior();
+        },
+
+        didUpdateAttrs() {
+          this._super(...arguments);
+          this._applyUserColor();
+        },
+
+        _applyUserColor() {
+          const user = this.message?.user;
+          if (user?.group_color) {
+            const username = this.element?.querySelector('.chat-message-info__username');
+            if (username) {
+              username.style.color = user.group_color;
+            }
+          }
+        },
+
+        _setupHoverBehavior() {
+          const username = this.element?.querySelector('.chat-message-info__username');
+          if (!username) return;
+          
+          username.addEventListener('mouseenter', (e) => {
+            const userCard = document.querySelector('.user-card');
+            if (userCard) {
+              const rect = username.getBoundingClientRect();
+              userCard.style.position = 'fixed';
+              userCard.style.top = `${rect.bottom + window.scrollY + 5}px`;
+              userCard.style.left = `${rect.left + window.scrollX}px`;
+              userCard.style.opacity = '1';
+              userCard.style.pointerEvents = 'auto';
+              userCard.style.display = 'block';
+            }
+          });
+
+          username.addEventListener('mouseleave', (e) => {
+            const userCard = document.querySelector('.user-card');
+            if (userCard && !userCard.contains(e.relatedTarget)) {
+              setTimeout(() => {
+                userCard.style.opacity = '0';
+                userCard.style.pointerEvents = 'none';
+              }, 500);
+            }
+          });
+        }
+      });
+
+      // Forum post username colors
       api.decorateWidget('poster-name:after', helper => {
         const user = helper.attrs.user;
         if (user?.group_color) {
@@ -23,108 +76,40 @@ export default {
         }
       });
 
-      // Modify chat message usernames
-      api.modifyClass('component:chat-message', {
-        pluginId: 'discourse-group-colors',
-        
-        didInsertElement() {
-          this._super(...arguments);
-          this._applyUserColor();
-        },
-
-        didUpdateAttrs() {
-          this._super(...arguments);
-          this._applyUserColor();
-        },
-
-        _applyUserColor() {
-          const user = this.message?.user;
-          if (user?.group_color) {
-            const username = this.element?.querySelector('.chat-message-info__username');
-            if (username) {
-              username.style.color = user.group_color;
-            }
-          }
-        }
-      });
-
-      // Add groups to user cards
+      // User card improvements
       api.modifyClass('component:user-card-contents', {
         pluginId: 'discourse-group-colors',
         
         didInsertElement() {
           this._super(...arguments);
-          this._setupHoverBehavior();
-          this._applyUserCardColors();
-        },
-
-        _setupHoverBehavior() {
-          const card = this.element;
-          if (!card) return;
-
-          card.style.transition = "opacity 0.3s ease";
-          
-          document.querySelectorAll(`[data-user-card="${this.user?.username}"]`).forEach(trigger => {
-            trigger.removeEventListener("mouseenter", this._showCard);
-            trigger.removeEventListener("mouseleave", this._hideCard);
-
-            trigger.addEventListener("mouseenter", this._showCard.bind(this));
-            trigger.addEventListener("mouseleave", this._hideCard.bind(this));
-          });
-
-          card.addEventListener("mouseenter", () => {
-            card.style.opacity = "1";
-            card.style.pointerEvents = "auto";
-          });
-
-          card.addEventListener("mouseleave", () => {
-            card.style.opacity = "0";
-            card.style.pointerEvents = "none";
-          });
-        },
-
-        _showCard(event) {
-          const card = this.element;
-          if (!card) return;
-
-          const trigger = event.target;
-          const rect = trigger.getBoundingClientRect();
-          const offset = 10;
-
-          card.style.position = "fixed";
-          card.style.top = `${rect.bottom + offset}px`;
-          card.style.left = `${rect.left}px`;
-          card.style.opacity = "1";
-          card.style.pointerEvents = "auto";
-          card.style.zIndex = "9999";
-        },
-
-        _hideCard(event) {
-          const card = this.element;
-          if (!card) return;
-
-          if (!card.contains(event.relatedTarget)) {
-            card.style.opacity = "0";
-            card.style.pointerEvents = "none";
+          if (this.user?.group_color) {
+            const nameWrapper = this.element?.querySelector('.name-username-wrapper');
+            if (nameWrapper) {
+              nameWrapper.style.color = this.user.group_color;
+            }
           }
-        },
 
-        _applyUserCardColors() {
+          // Add groups list to user card
           const user = this.user;
-          if (!user?.group_color) return;
-
-          const nameWrapper = this.element?.querySelector('.name-username-wrapper');
-          if (nameWrapper) {
-            nameWrapper.style.color = user.group_color;
+          if (user?.groups) {
+            const groupsContainer = document.createElement('div');
+            groupsContainer.className = 'user-card-groups';
+            
+            const groupsList = document.createElement('ul');
+            user.groups.forEach(group => {
+              const li = document.createElement('li');
+              li.textContent = group.name;
+              if (group.color) {
+                li.style.color = group.color;
+              }
+              groupsList.appendChild(li);
+            });
+            
+            groupsContainer.appendChild(groupsList);
+            this.element.appendChild(groupsContainer);
           }
         }
       });
-
-      // Add hover styles
-      api.decorateCooked($elem => {
-        const users = $elem.find('[data-user-card]');
-        users.addClass('discourse-group-colors-hover');
-      }, { id: 'discourse-group-colors' });
     });
   }
 };
