@@ -1,33 +1,28 @@
 {{!-- assets/javascripts/discourse/templates/admin-plugins-group-colors.hbs --}}
 <div class="group-colors-admin">
-<h2>{{i18n "group_colors.title"}}</h2>
-{{
-#if this.siteSettings.group_colors_enabled}}
-  <div class="groups-list">
-    {{ #each this.groups as |group|}}
-      <div class="group-row">
-        <div class="group-name">{{group.name}}</div>
-        <div class="group-color">
-          <ColorInput @value={{group.custom_fields.color}} @onChange={{fn this.updateGroupColor group}} />
-        </div>
-        {{ #if this.siteSettings.group_colors_priority_enabled}}
-          <div class="group-rank">
-            <Input @type="number" @value={{group.custom_fields.color_rank}} @input={{fn this.updateGroupRank group}} min="1" />
+  <h2>{{i18n "group_colors.title"}}</h2>
+
+  {{#if this.siteSettings.group_colors_enabled}}
+    <div class="groups-list">
+      {{#each this.groups as |group|}}
+        <div class="group-row">
+          <div class="group-name">{{group.name}}</div>
+          <div class="group-color">
+            <ColorInput @value={{group.custom_fields.color}} @onChange={{fn this.updateGroupColor group}} />
           </div>
-        {{
-/if
-}}
-        <div class="group-preview">
-          <span style={{html-safe (concat "color: " group.custom_fields.color)}}>{{group.name}}</span>
+          {{#if this.siteSettings.group_colors_priority_enabled}}
+            <div class="group-rank">
+              <Input @type="number" @value={{group.custom_fields.color_rank}} @input={{fn this.updateGroupRank group}} min="1" />
+            </div>
+          {{/if}}
+          <div class="group-preview">
+            <span style={{html-safe (concat "color: " group.custom_fields.color)}}>{{group.name}}</span>
+          </div>
         </div>
-      </div>
-    {{
-/each
-}}
-  </div>
-{{else}}
-  <p>{{i18n "group_colors.disabled_message"}}</p>
-{{
-/if
-}}
+      {{/each}}
+    </div>
+  {{else}}
+    <p>{{i18n "group_colors.disabled_message"}}</p>
+  {{/if}}
 </div>
+
