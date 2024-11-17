@@ -1,5 +1,8 @@
 en:
   site_settings:
-    group_colors_enabled: "Enable group colors plugin"
-    group_colors_hover_delay: "Delay before showing user card on hover (ms)"
-    group_colors_show_ranks: "Show group ranks in user cards"
+    group_colors: "Group Colors"
+    group_colors_enabled: "Enable group color system"
+    group_colors_hover_enabled: "Enable hover cards for group colors"
+    group_colors_default_admin: "Default admin group color"
+    group_colors_default_moderator: "Default moderator group color"
+    group_colors_priority_enabled: "Enable color priority system"
