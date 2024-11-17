@@ -1,44 +1,19 @@
 # config/settings.yml
 
-group_colors:
-  client: true
-  default: true
-  type: group
-  description: "Configure group colors"
-
 group_colors_enabled:
-  category: group_colors
-  client: true
   default: true
+  client: true
   type: bool
-  description: "Enable colored usernames based on group membership"
+  description: "Enable group colors plugin"
 
 group_colors_hover_enabled:
-  category: group_colors
-  client: true
   default: true
+  client: true
   type: bool
   description: "Enable hover cards for colored usernames"
 
-group_colors_default_admin:
-  category: group_colors
-  client: true
-  type: string
-  default: "#FF0000"
-  description: "Default color for admin group"
-  regex: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-
-group_colors_default_moderator:
-  category: group_colors
-  client: true
-  type: string
-  default: "#0000FF"
-  description: "Default color for moderator group"
-  regex: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
-
 group_colors_priority_enabled:
-  category: group_colors
-  client: true
   default: true
+  client: true
   type: bool
   description: "Enable priority system for group colors"
