@@ -1,4 +1,5 @@
-// config/locales/server.en.yml
 en:
   site_settings:
     group_colors_enabled: "Enable group colors plugin"
+    group_colors_hover_delay: "Delay before showing user card on hover (ms)"
+    group_colors_show_ranks: "Show group ranks in user cards"

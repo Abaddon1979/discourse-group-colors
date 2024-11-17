@@ -8,3 +8,4 @@ en:
       save_success: "Group colors saved successfully"
       save_error: "Error saving group colors"
       load_error: "Error loading groups"
+      groups_label: "Groups"
