@@ -1,17 +1,18 @@
 # config/settings.yml
 
-group_colors_enabled:
-  default: true
-  client: true
-  type: bool
-  category: rank_colors
-group_colors_hover_enabled:
-  default: true
-  client: true
-  type: bool
-  category: rank_colors
-group_colors_priority_enabled:
-  default: true
-  client: true
-  type: bool
-  category: rank_colors
+plugins:
+  group_colors_enabled:
+    default: true
+    client: true
+    type: bool
+    category: rank_colors
+  group_colors_hover_enabled:
+    default: true
+    client: true
+    type: bool
+    category: rank_colors
+  group_colors_priority_enabled:
+    default: true
+    client: true
+    type: bool
+    category: rank_colors
