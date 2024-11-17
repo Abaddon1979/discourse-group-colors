@@ -9,4 +9,8 @@ export default class AdminPluginsGroupColorsRoute extends DiscourseRoute {
   setupController(controller, model) {
     controller.set("groups", model);
   }
+
+  renderTemplate() {
+    this.render('admin-plugins-group-colors');
+  }
 }

@@ -49,7 +49,12 @@ after_initialize do
     end
   end
 
+  # Add admin route
+  add_admin_route 'group_colors.title', 'group-colors'
+
+  # Add routes
   Discourse::Application.routes.append do
     put '/groups/:id/color' => 'groups#update_color'
+    get '/admin/plugins/group-colors' => 'admin/plugins#index', constraints: StaffConstraint.new
   end
 end
