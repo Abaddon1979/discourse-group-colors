@@ -2,22 +2,16 @@
 <div class="group-colors-admin">
   <h2>{{i18n "group_colors.title"}}</h2>
 
-  <div class="settings-header">
-    <button class="btn" {{on "click" this.saveOrder}}>{{i18n "group_colors.save_order"}}</button>
-  </div>
-
-  <div class="groups-list sortable">
-    {{#each this.sortedGroups as |group|}}
-      <div class="group-row sortable-group" data-group-id={{group.id}}>
-        <div class="group-sort-handle">{{d-icon "bars"}}</div>
+  <div class="groups-list">
+    {{#each this.groups as |group|}}
+      <div class="group-row">
         <div class="group-name">{{group.name}}</div>
         <div class="group-color">
-          <ColorInput @value={{group.custom_fields.color}} @onChange={{fn this.updateGroupColor group}} />
+          <ColorInput @value={{group.color}} @onChange={{fn this.updateGroupColor group}} />
         </div>
-        <div class="group-preview">
-          <span style={{html-safe (concat "color: " group.custom_fields.color)}}>{{group.name}}</span>
+        <div class="group-rank">
+          <Input @type="number" @value={{group.color_rank}} @input={{fn this.updateGroupRank group}} min="1" />
         </div>
-        <div class="group-rank">{{group.custom_fields.color_rank}}</div>
       </div>
     {{/each}}
   </div>

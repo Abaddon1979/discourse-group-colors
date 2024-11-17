@@ -3,14 +3,10 @@ import DiscourseRoute from "discourse/routes/discourse";
 
 export default class AdminPluginsGroupColorsRoute extends DiscourseRoute {
   model() {
-    return this.store.findAll("group");
+    return this.store.findAll('group');
   }
 
   setupController(controller, model) {
-    controller.set("groups", model);
-  }
-
-  renderTemplate() {
-    this.render('admin-plugins-group-colors');
+    controller.set('groups', model);
   }
 }

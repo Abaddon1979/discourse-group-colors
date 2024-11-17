@@ -1,5 +1,6 @@
 en:
   site_settings:
-    group_colors_enabled: "Enable group colors"
+    rank_colors: "Rank Colors"
+    group_colors_enabled: "Enable group color system"
     group_colors_hover_enabled: "Enable hover cards for group colors"
-    group_colors_priority_enabled: "Enable priority system for group colors"
+    group_colors_priority_enabled: "Enable priority system for group colors (lower rank takes precedence)"
