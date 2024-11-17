@@ -1,10 +1,9 @@
 # config/locales/client.en.yml
 en:
-en:
   js:
     group_colors:
-      title: "Group Colors Configuration"
-      save_order: "Save Order"
-      order_saved: "Group order saved successfully"
-      save_success: "Group color saved successfully"
-      disabled_message: "Group colors are currently disabled"
+      title: "Group Colors"
+      description: "Configure colors for user groups"
+  admin:
+    group_colors:
+      title: "Group Colors"

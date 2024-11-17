@@ -61,17 +61,10 @@ after_initialize do
     end
   end
 
-  # Add admin route
-  add_admin_route 'group_colors.title', 'group-colors'
-
   # Add routes
   Discourse::Application.routes.append do
     put '/groups/:id/color' => 'groups#update_color'
-    
-    # Admin route
-    scope "/admin/plugins/group-colors", constraints: StaffConstraint.new do
-      get "/" => "admin/plugins#index", constraints: AdminConstraint.new
-    end
+    get '/admin/plugins/group-colors' => 'admin/plugins#index', constraints: StaffConstraint.new
   end
 
   # Initialize colors for existing groups if needed
@@ -84,21 +77,6 @@ after_initialize do
           group.custom_fields['color_rank'] = 999 # Default to lowest priority
           group.save_custom_fields(true)
         end
-      end
-    end
-  end
-
-  # Add UserCard hover behavior
-  register_html_builder('server:before-head-close') do
-    "<script type='text/discourse-plugin' data-route='group-colors-hover'></script>"
-  end
-
-  # Handle user card hover events
-  DiscourseEvent.on(:before_user_card_render) do |user, card|
-    if SiteSetting.group_colors_enabled && SiteSetting.group_colors_hover_enabled
-      if user.group_color
-        card.add_class('has-group-color')
-        card.add_style("color: #{user.group_color}")
       end
     end
   end
