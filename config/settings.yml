@@ -2,17 +2,17 @@
 
 plugins:
   group_colors_enabled:
-    client: true
     default: true
+    client: true
     type: bool
     refresh: true
   group_colors_hover_delay:
-    client: true
     default: 200
+    client: true
     type: integer
     refresh: true
   group_colors_show_ranks:
-    client: true
     default: true
+    client: true
     type: bool
     refresh: true
