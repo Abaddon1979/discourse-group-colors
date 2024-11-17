@@ -6,12 +6,13 @@ export default {
   name: "group-colors",
   initialize() {
     withPluginApi("0.8.31", api => {
-      // Add admin menu item
-      api.registerAdminMenu("group-colors", {
-        name: "group_colors.title",
-        location: "plugins",
-        icon: "paint-brush",
-        route: "adminPlugins.group-colors"
+      // Register route in admin interface
+      api.addPluginAdminRoute("group-colors", {
+        setupRoute(router) {
+          router.route("group-colors", { path: "/group-colors", resetNamespace: true }, function() {
+            this.route("index", { path: "/" });
+          });
+        }
       });
 
       // Apply colors to post usernames
@@ -72,18 +73,14 @@ export default {
 
           card.style.transition = "opacity 0.3s ease";
           
-          // Find all elements that trigger this user card
           document.querySelectorAll(`[data-user-card="${this.user?.username}"]`).forEach(trigger => {
-            // Remove existing listeners to prevent duplicates
             trigger.removeEventListener("mouseenter", this._showCard);
             trigger.removeEventListener("mouseleave", this._hideCard);
 
-            // Add new listeners
             trigger.addEventListener("mouseenter", this._showCard.bind(this));
             trigger.addEventListener("mouseleave", this._hideCard.bind(this));
           });
 
-          // Add listener to the card itself to prevent hiding while hovering
           card.addEventListener("mouseenter", () => {
             card.style.opacity = "1";
             card.style.pointerEvents = "auto";
@@ -99,7 +96,6 @@ export default {
           const card = this.element;
           if (!card) return;
 
-          // Position the card near the trigger element
           const trigger = event.target;
           const rect = trigger.getBoundingClientRect();
           const offset = 10;
@@ -116,7 +112,6 @@ export default {
           const card = this.element;
           if (!card) return;
 
-          // Check if the mouse is moving to the card itself
           if (!card.contains(event.relatedTarget)) {
             card.style.opacity = "0";
             card.style.pointerEvents = "none";
@@ -132,29 +127,6 @@ export default {
             nameWrapper.style.color = user.group_color;
           }
         }
-      });
-
-      // Add group list to user cards
-      api.decorateWidget('user-card-contents:after', helper => {
-        const user = helper.attrs.user;
-        if (!user?.groups) return;
-
-        return helper.h('div.user-card-groups', [
-          helper.h('h3', I18n.t('group_colors.groups_label')),
-          helper.h('ul.groups-list', 
-            user.groups.map(group => 
-              helper.h('li.group-list-item', [
-                helper.h('span.group-name', {
-                  style: `color: ${group.color || 'inherit'}`
-                }, [
-                  iconHTML('users'),
-                  ` ${group.name} `,
-                  group.rank ? `(${I18n.t('group_colors.rank')}: ${group.rank})` : ''
-                ])
-              ])
-            )
-          )
-        ]);
       });
 
       // Add hover styles
