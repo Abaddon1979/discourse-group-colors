@@ -2,7 +2,6 @@
 <div class="group-colors-admin">
   <h2>{{i18n "group_colors.title"}}</h2>
   <p class="description">{{i18n "group_colors.description"}}</p>
-
   {{
 #if
  this.groups}}
@@ -22,25 +21,20 @@
           <tr class="group-row">
             <td class="group-name">{{group.name}}</td>
             <td class="group-color">
-              <ColorInput
-                @value={{group.color}}
-                @onChange={{fn this.updateGroupColor group}}
-              />
+              <ColorInput @value={{group.color}} @onChange={{fn this.updateGroupColor group}} />
             </td>
             <td class="group-rank">
-              <Input
-                @type="number"
-                @value={{group.color_rank}}
-                @input={{fn this.updateGroupRank group}}
-                min="1"
-                placeholder="1"
-                class="rank-input"
+              <Input 
+                @type="number" 
+                @value={{group.color_rank}} 
+                @input={{fn this.updateGroupRank group}} 
+                min="1" 
+                placeholder="1" 
+                class="rank-input" 
               />
             </td>
             <td class="group-preview">
-              <span style={{html-safe (concat "color: " group.color)}}>
-                {{group.name}}
-              </span>
+              <span style={{html-safe (concat "color: " group.color)}}>{{group.name}}</span>
             </td>
           </tr>
         {{
