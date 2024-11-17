@@ -1,44 +1,15 @@
-// assets/stylesheets/group-colors.scss
-
-// Admin Panel Styles
-.group-colors-admin {
-  padding: 2em;
-  background: var(--secondary);
-  border-radius: 0.5em;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-
-  h2 {
-    margin-bottom: 1em;
-    color: var(--primary);
-    font-size: 1.5em;
-  }
-
-  .settings-header {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1.5em;
-    padding-bottom: 1em;
-    border-bottom: 1px solid var(--primary-low);
-
-    .btn {
-      background: var(--tertiary);
-      color: var(--secondary);
-      font-weight: 500;
-      
-      &:hover {
-        background: var(--tertiary-hover);
-      }
-    }
-  }
-
-  .groups-list {
+// Site Settings Group Colors List Styles
+.group-colors-list {
+  margin: 1em 0;
+  
+  .groups-container {
     border: 1px solid var(--primary-low);
     border-radius: 0.5em;
     background: var(--secondary);
     overflow: hidden;
   }
 
-  .group-row {
+  .sortable-group {
     display: flex;
     align-items: center;
     padding: 1em;
@@ -54,18 +25,21 @@
       background: var(--primary-very-low);
     }
 
-    &.sortable-ghost {
+    &.being-dragged {
       opacity: 0.5;
-      background: var(--primary-very-low);
-    }
-
-    &.sortable-chosen {
       background: var(--primary-very-low);
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
   }
 
-  .group-sort-handle {
+  .group-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 1em;
+  }
+
+  .group-drag-handle {
     cursor: grab;
     padding: 0.5em;
     color: var(--primary-medium);
@@ -81,14 +55,12 @@
 
   .group-name {
     flex: 1;
-    margin: 0 1em;
     font-weight: 500;
     color: var(--primary);
   }
 
   .group-color {
     width: 120px;
-    margin: 0 1em;
 
     .color-picker {
       width: 100%;
@@ -101,122 +73,32 @@
 
   .group-preview {
     width: 150px;
-    margin: 0 1em;
     padding: 0.5em;
     text-align: center;
     border-radius: 4px;
     background: var(--primary-very-low);
-    
-    span {
-      font-weight: 500;
-    }
-  }
-
-  .group-rank {
-    width: 50px;
-    text-align: center;
     font-weight: 500;
-    color: var(--primary-medium);
   }
 }
 
-// Chat Message Username Styles
-.chat-message {
-  .chat-message-info__username {
-    transition: color 0.2s ease;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
-}
-
-// Forum Username Styles
-.topic-post {
-  .names {
-    .username {
-      transition: color 0.2s ease;
-    }
-  }
-}
-
-// User Card Styles
-.user-card {
-  .names {
-    .username {
-      transition: color 0.2s ease;
-    }
-  }
-
-  .groups-list {
-    margin-top: 1em;
-    padding-top: 1em;
-    border-top: 1px solid var(--primary-low);
-
-    .groups-title {
-      color: var(--primary-medium);
-      font-size: 0.9em;
-      margin-bottom: 0.5em;
-    }
-
-    .group-item {
-      display: inline-block;
-      margin: 0.2em 0.4em 0.2em 0;
-      padding: 0.3em 0.6em;
-      border-radius: 3px;
-      background: var(--primary-very-low);
-      font-size: 0.9em;
-      font-weight: 500;
-      transition: background-color 0.2s ease;
-
-      &:hover {
-        background: var(--primary-low);
-      }
-    }
-  }
-}
-
-// Error and Success Messages
-.admin-contents {
-  .alert {
-    margin: 1em 0;
-    padding: 1em;
-    border-radius: 4px;
-    
-    &.alert-success {
-      background: var(--success-low);
-      color: var(--success);
-    }
-    
-    &.alert-error {
-      background: var(--danger-low);
-      color: var(--danger);
-    }
-  }
-}
-
-// Responsive Styles
+// Responsive styles for site settings
 @media (max-width: 768px) {
-  .group-colors-admin {
-    padding: 1em;
-
-    .group-row {
+  .group-colors-list {
+    .sortable-group {
       flex-wrap: wrap;
+      
+      .group-item {
+        flex-direction: column;
+        gap: 0.5em;
+      }
       
       .group-name {
         width: 100%;
-        margin-bottom: 0.5em;
       }
       
       .group-color,
       .group-preview {
-        width: auto;
-        flex: 1;
-      }
-      
-      .group-rank {
-        width: 40px;
+        width: 100%;
       }
     }
   }
