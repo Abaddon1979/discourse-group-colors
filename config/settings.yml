@@ -5,14 +5,4 @@ plugins:
     default: true
     client: true
     type: bool
-    refresh: true
-  group_colors_hover_delay:
-    default: 200
-    client: true
-    type: integer
-    refresh: true
-  group_colors_show_ranks:
-    default: true
-    client: true
-    type: bool
-    refresh: true
+    description: "Enable colored usernames based on group membership"
