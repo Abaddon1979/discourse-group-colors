@@ -1,9 +1,5 @@
-# config/locales/client.en.yml
 en:
   js:
     group_colors:
-      title: "Group Colors"
-      description: "Configure colors for user groups"
-  admin:
-    group_colors:
-      title: "Group Colors"
+      no_groups: "No groups found"
+      drag_to_sort: "Drag groups to set priority"
