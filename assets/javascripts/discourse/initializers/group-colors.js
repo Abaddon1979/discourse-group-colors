@@ -6,11 +6,11 @@ export default {
   name: "group-colors",
   initialize() {
     withPluginApi("0.8", (api) => {
-      api.addPluginPane("group-colors", {
-        name: "group-colors",
-        title: "group_colors.title",
-        icon: "paint-brush",
-        component: () => import("./admin/group-colors"),
+
+      api.addAdminRoute('group-colors.title', 'group-colors', {
+        path: 'group-colors',
+        icon: 'paint-brush',
+        component: () => import('./admin/group-colors')
       });
 
       api.createWidget("group-member-color-input", {
