@@ -4,9 +4,8 @@ import { inject as service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
-export default class SiteSettingGroupColorsList extends Component {
+export default class GroupColorsList extends Component {
   @service store;
-  @service siteSettings;
 
   init() {
     super.init(...arguments);
@@ -39,19 +38,16 @@ export default class SiteSettingGroupColorsList extends Component {
   }
 
   @action
-  async updateOrder(groupIds) {
+  async updateRank(group, index) {
     try {
-      await Promise.all(
-        groupIds.map((id, index) => 
-          ajax(`/groups/${id}/color`, {
-            type: "PUT",
-            data: {
-              color_rank: index + 1
-            }
-          })
-        )
-      );
-      await this.loadGroups(); // Reload to show new order
+      await ajax(`/groups/${group.id}/color`, {
+        type: "PUT",
+        data: {
+          color: group.custom_fields.color,
+          color_rank: index + 1
+        }
+      });
+      group.set('custom_fields.color_rank', index + 1);
     } catch (error) {
       popupAjaxError(error);
     }

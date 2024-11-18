@@ -1,14 +1,9 @@
 <div class="group-colors-list">
-  <div class="setting-label">
-    <h3>{{i18n "group_colors.title"}}</h3>
-    <p class="setting-desc">{{i18n "group_colors.description"}}</p>
-  </div>
-
   {{#if this.groups}}
     <div class="groups-container">
-      {{#sortable-group onChange=this.updateOrder class="sortable-groups"}}
+      {{#sortable-group onChange=this.updateRank class="sortable-groups"}}
         {{#each this.groups as |group|}}
-          {{#sortable-item class="sortable-group" model=group.id}}
+          {{#sortable-item model=group class="sortable-group"}}
             <div class="group-item">
               <div class="group-drag-handle">
                 {{d-icon "bars"}}
@@ -17,10 +12,7 @@
                 {{group.name}}
               </div>
               <div class="group-color">
-                <ColorInput 
-                  @value={{group.custom_fields.color}} 
-                  @onChange={{fn this.updateColor group}} 
-                />
+                <ColorInput @value={{group.custom_fields.color}} @onChange={{fn this.updateColor group}} />
               </div>
               <div class="group-preview" style={{html-safe (concat "color: " group.custom_fields.color)}}>
                 {{group.name}}

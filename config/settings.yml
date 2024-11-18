@@ -13,3 +13,7 @@ plugins:
     type: bool
     default: true
     client: true
+  group_colors_list:
+    type: group_colors_list
+    default: ""
+    client: true
