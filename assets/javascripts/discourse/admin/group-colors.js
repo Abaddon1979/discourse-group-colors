@@ -2,10 +2,10 @@
 
 import Component from "@ember/component";
 import { action } from "@ember/object";
-import I18n from "I18n";
 import { inject as service } from "@ember/service";
 
-export default Component.extend({
+export default   
+ Component.extend({
   ajax: service(),
 
   groupColorsEnabled: false,
@@ -43,38 +43,20 @@ export default Component.extend({
   @action
   updateColor(group, color) {
     this.ajax.put(`/admin/groups/${group.id}/custom_fields`, {
-      color: color,
+      color,
     });
   },
 
   @action
-  async toggleGroupColorsEnabled() {
-    this.set("groupColorsEnabled", !this.groupColorsEnabled);
+  async toggleSetting(settingName) {
+    this.set(settingName, !this.get(settingName));
     try {
       await this.ajax.put("/admin/plugins/group-colors/settings", {
-        group_colors_enabled: this.groupColorsEnabled,
+        [settingName]: this.get(settingName),
       });
-      // Refresh the page after updating the setting
       window.location.reload();
     } catch (error) {
-      console.error("Error toggling group colors enabled:", error);
-    }
-  },
-
-  @action
-  async toggleGroupColorsPriorityEnabled() {
-    this.set(
-      "groupColorsPriorityEnabled",
-      !this.groupColorsPriorityEnabled
-    );
-    try {
-      await this.ajax.put("/admin/plugins/group-colors/settings", {
-        group_colors_priority_enabled: this.groupColorsPriorityEnabled,
-      });
-      // Refresh the page after updating the setting
-      window.location.reload();
-    } catch (error) {
-      console.error("Error toggling group colors priority enabled:", error);
+      console.error(`Error toggling ${settingName}:`, error);
     }
   },
 });

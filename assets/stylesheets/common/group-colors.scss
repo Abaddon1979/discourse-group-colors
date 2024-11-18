@@ -36,5 +36,5 @@
 .chat-message-info__username__name, 
 .username a, 
 .name-username-wrapper {
-  color: var(--group-color); 
+  color: var(--group-color) !important; 
 }

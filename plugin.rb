@@ -26,6 +26,8 @@ after_initialize do
     mount ::GroupColors::Engine, at: "/admin/plugins/group-colors"
   end
 
+  add_admin_route 'group_colors.title', 'group-colors'
+
   require_dependency "application_controller"
 
   class ::GroupColors::GroupColorsController < ::ApplicationController
