@@ -9,8 +9,8 @@
       <input
         type="checkbox"
         id="group_colors_enabled"
-        checked={{this.groupColorsEnabled}}
-        {{on "change" this.toggleGroupColorsEnabled}}
+        checked={{group_colors_enabled}}
+        {{on "change" (action "toggleSetting" "group_colors_enabled")}}
       />
       {{i18n "group_colors.enabled"}}
     </label>
@@ -21,8 +21,8 @@
       <input
         type="checkbox"
         id="group_colors_priority_enabled"
-        checked={{this.groupColorsPriorityEnabled}}
-        {{on "change" this.toggleGroupColorsPriorityEnabled}}
+        checked={{group_colors_priority_enabled}}
+        {{on "change" (action "toggleSetting" "group_colors_priority_enabled")}}
       />
       {{i18n "group_colors.priority_enabled"}}
     </label>
@@ -31,7 +31,7 @@
   {{#if this.model}}
     <div class="groups-container">
       {{#sortable-group
-        onChange=this.reorderGroups
+        onChange=(action "reorderGroups")
         class="sortable-groups"
       }}
         {{#each this.model as |group|}}
@@ -46,7 +46,7 @@
               <div class="group-color">
                 <ColorInput
                   @value={{group.custom_fields.color}}
-                  @onChange={{fn this.updateColor group}}
+                  @onChange={{fn (action "updateColor" group)}}
                 />
               </div>
               <div

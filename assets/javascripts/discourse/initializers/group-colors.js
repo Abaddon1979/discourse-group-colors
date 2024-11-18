@@ -17,31 +17,6 @@ export default {
         },
       });
 
-      api.modifyClass("component:group-show", {
-        pluginId: "group-colors",
-        didInsertElement() {
-          this._super(...arguments);
-          this.registerColorInput();
-        },
-        registerColorInput() {
-          const onChange = (color) => {
-            this.updateGroupColor(color);
-          };
-          this.attachWidget(
-            this.group.id,
-            api.container.lookup("widget:group-member-color-input", {
-              color: this.group.custom_fields?.color,
-              onChange,
-            })
-          );
-        },
-        updateGroupColor(color) {
-          api.put(`/admin/groups/${this.group.id}/custom_fields`, {
-            color: color,
-          });
-        },
-      });
-
       const addGroupAttributeAndColor = () => {
         const elements = document.querySelectorAll(
           '.chat-message-info__username__name, .username a, .name-username-wrapper'
@@ -79,3 +54,5 @@ export default {
     });
   },
 };
+Use code with caution.
+

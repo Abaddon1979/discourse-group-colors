@@ -30,12 +30,16 @@ after_initialize do
   require_dependency "application_controller"
 
   class ::GroupColors::GroupColorsController < ::ApplicationController
-    requires_plugin "group-colors"
+    requires_plugin "group_colors"
 
     before_action :ensure_admin
 
     def index
-      render json: success_json.merge(groups: Group.all)
+      render json: success_json.merge(
+        groups: Group.all,
+        group_colors_enabled: SiteSetting.group_colors_enabled,
+        group_colors_priority_enabled: SiteSetting.group_colors_priority_enabled
+      )
     end
 
     def reorder
