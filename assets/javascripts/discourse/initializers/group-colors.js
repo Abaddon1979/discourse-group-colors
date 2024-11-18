@@ -6,8 +6,6 @@ export default {
   name: "group-colors",
   initialize() {
     withPluginApi("0.8", (api) => {
-
-      api.registerAdminPage('group-colors', 'group_colors.title', {
         icon: 'paint-brush',
         route: 'group-colors',
         component: () => import('./admin/group-colors')

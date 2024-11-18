@@ -18,6 +18,7 @@ after_initialize do
   end
 
   GroupColors::Engine.routes.draw do
+    get "/" => "group_colors#index"
     put "/reorder" => "group_colors#reorder"
     put "/settings" => "group_colors#settings"
   end
@@ -32,6 +33,10 @@ after_initialize do
     requires_plugin "group-colors"
 
     before_action :ensure_admin
+
+    def index
+      render json: success_json.merge(groups: Group.all)
+    end
 
     def reorder
       group_ids = params.require(:group_ids)
