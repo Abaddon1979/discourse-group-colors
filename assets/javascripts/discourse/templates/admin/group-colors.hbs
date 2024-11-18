@@ -1,0 +1,66 @@
+{{!-- assets/javascripts/discourse/templates/admin/group-colors.hbs --}}
+
+<div class="group-colors-admin">
+  <h2>{{i18n "group_colors.title"}}</h2>
+  <p class="description">{{i18n "group_colors.description"}}</p>
+
+  <div class="setting">
+    <label for="group_colors_enabled">
+      <input
+        type="checkbox"
+        id="group_colors_enabled"
+        checked={{this.groupColorsEnabled}}
+        {{on "change" this.toggleGroupColorsEnabled}}
+      />
+      {{i18n "group_colors.enabled"}}
+    </label>
+  </div>
+
+  <div class="setting">
+    <label for="group_colors_priority_enabled">
+      <input
+        type="checkbox"
+        id="group_colors_priority_enabled"
+        checked={{this.groupColorsPriorityEnabled}}
+        {{on "change" this.toggleGroupColorsPriorityEnabled}}
+      />
+      {{i18n "group_colors.priority_enabled"}}
+    </label>
+  </div>
+
+  {{#if this.model}}
+    <div class="groups-container">
+      {{#sortable-group
+        onChange=this.reorderGroups
+        class="sortable-groups"
+      }}
+        {{#each this.model as |group|}}
+          {{#sortable-item model=group class="sortable-group"}}
+            <div class="group-item">
+              <div class="group-drag-handle">
+                {{d-icon "bars"}}
+              </div>
+              <div class="group-name">
+                {{group.name}}
+              </div>
+              <div class="group-color">
+                <ColorInput
+                  @value={{group.custom_fields.color}}
+                  @onChange={{fn this.updateColor group}}
+                />
+              </div>
+              <div
+                class="group-preview"
+                style={{html-safe (concat "color: " group.custom_fields.color)}}
+              >
+                {{group.name}}
+              </div>
+            </div>
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
+    </div>
+  {{else}}
+    <p>{{i18n "group_colors.no_groups"}}</p>
+  {{/if}}
+</div>

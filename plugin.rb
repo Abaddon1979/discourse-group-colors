@@ -9,6 +9,7 @@ enabled_site_setting :group_colors_enabled
 register_asset "stylesheets/common/group-colors.scss"
 
 after_initialize do
+
   module ::GroupColors
     class Engine < ::Rails::Engine
       engine_name "group_colors"
@@ -35,7 +36,7 @@ after_initialize do
     def reorder
       group_ids = params.require(:group_ids)
       group_ids.each_with_index do |group_id, index|
-        Group.find(group_id).update!(color_rank: index + 1)
+        Group.find(group_id).update!(rank: index + 1)
       end
       render json: success_json
     end
