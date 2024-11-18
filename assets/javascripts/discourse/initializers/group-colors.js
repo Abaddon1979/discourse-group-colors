@@ -54,5 +54,3 @@ export default {
     });
   },
 };
-Use code with caution.
-
