@@ -1,5 +1,5 @@
 # settings.yml
-Group Colors:
+group_colors:
   group_colors_enabled:
     default: true
     client: true
