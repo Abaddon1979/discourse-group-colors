@@ -54,6 +54,8 @@ export default Component.extend({
       await this.ajax.put("/admin/plugins/group-colors/settings", {
         group_colors_enabled: this.groupColorsEnabled,
       });
+      // Refresh the page after updating the setting
+      window.location.reload();
     } catch (error) {
       console.error("Error toggling group colors enabled:", error);
     }
@@ -69,6 +71,8 @@ export default Component.extend({
       await this.ajax.put("/admin/plugins/group-colors/settings", {
         group_colors_priority_enabled: this.groupColorsPriorityEnabled,
       });
+      // Refresh the page after updating the setting
+      window.location.reload();
     } catch (error) {
       console.error("Error toggling group colors priority enabled:", error);
     }
