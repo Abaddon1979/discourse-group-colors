@@ -5,7 +5,7 @@ import { withPluginApi } from "discourse/lib/plugin-api";
 export default {
   name: "group-colors",
   initialize() {
-    withPluginApi("0.12.3", (api) => {
+    withPluginApi("0.8", (api) => {
       api.addPluginPane("group-colors", {
         name: "group-colors",
         title: "group_colors.title",
