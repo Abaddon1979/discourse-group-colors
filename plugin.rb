@@ -1,4 +1,8 @@
-# plugin.rb
+# name: discourse-group-colors
+# about: Colors usernames based on group membership with hover cards
+# version: 0.1.0
+# authors: Abaddon
+# url: https://github.com/Abaddon1979/discourse-group-colors
 
 enabled_site_setting :group_colors_enabled
 

@@ -1,0 +1,10 @@
+# client.en.yml
+
+en:
+  js:
+    group_colors:
+      title: "Group Colors"
+      description: "Assign colors to groups to highlight their members."
+      no_groups: "No groups found."
+      enabled: "Enable group colors"
+      priority_enabled: "Enable group color priority"
