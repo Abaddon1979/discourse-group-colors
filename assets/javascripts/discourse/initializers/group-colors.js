@@ -42,33 +42,40 @@ export default {
         },
       });
 
-      // Decorate the user name in various locations
-      const decorateUserName = (helper) => {
-        const user = helper.attrs.user;
-        if (user) {
-          const groups = user.groups.sort(
-            (a, b) => a.custom_fields.rank - b.custom_fields.rank
-          );
-          const groupWithColor = groups.find(
-            (group) => group.custom_fields.color
-          );
-          if (groupWithColor) {
-            helper.addRawClass(`group-color-${groupWithColor.id}`);
-            helper.rawHtml(
-              `<style>
-                .group-color-${groupWithColor.id} {
-                  color: ${groupWithColor.custom_fields.color} !important;
-                }
-              </style>`
+      const addGroupAttributeAndColor = () => {
+        const elements = document.querySelectorAll(
+          '.chat-message-info__username__name, .username a, .name-username-wrapper'
+        );
+
+        elements.forEach((element) => {
+          const username = element.textContent.trim();
+          const user = Discourse.User.findByUsername(username);
+
+          if (user) {
+            const groups = user.groups.sort(
+              (a, b) => a.custom_fields.rank - b.custom_fields.rank
             );
+            const groupWithColor = groups.find(
+              (group) => group.custom_fields.color
+            );
+
+            if (groupWithColor) {
+              // Add the group name as an attribute
+              element.setAttribute('data-group', groupWithColor.id);
+
+              // Apply the color using a CSS variable
+              element.style.setProperty(
+                '--group-color',
+                groupWithColor.custom_fields.color
+              );
+            }
           }
-        }
+        });
       };
 
-      api.decorateWidget("poster-name:after", decorateUserName);
-      api.decorateWidget("username:after", decorateUserName);
-      api.decorateWidget("chat-message-username:after", decorateUserName);
-      api.decorateWidget("user-card-username:after", decorateUserName);
+      api.onPageChange(() => {
+        addGroupAttributeAndColor();
+      });
     });
   },
 };

@@ -11,6 +11,15 @@ export default Component.extend({
   groupColorsEnabled: false,
   groupColorsPriorityEnabled: false,
 
+  init() {
+    this._super(...arguments);
+    this.set("groupColorsEnabled", SiteSetting.group_colors_enabled);
+    this.set(
+      "groupColorsPriorityEnabled",
+      SiteSetting.group_colors_priority_enabled
+    );
+  },
+
   @action
   async reorderGroups(groups) {
     try {
@@ -53,7 +62,10 @@ export default Component.extend({
 
   @action
   async toggleGroupColorsPriorityEnabled() {
-    this.set("groupColorsPriorityEnabled", !this.groupColorsPriorityEnabled);
+    this.set(
+      "groupColorsPriorityEnabled",
+      !this.groupColorsPriorityEnabled
+    );
     try {
       await this.ajax.put("/admin/plugins/group-colors/settings", {
         group_colors_priority_enabled: this.groupColorsPriorityEnabled,
