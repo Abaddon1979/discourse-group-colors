@@ -35,14 +35,8 @@ export default {
             );
 
             if (groupWithColor) {
-              // Add the group name as an attribute
               element.setAttribute('data-group', groupWithColor.id);
-
-              // Apply the color using a CSS variable
-              element.style.setProperty(
-                '--group-color',
-                groupWithColor.custom_fields.color
-              );
+              element.style.setProperty('--group-color', groupWithColor.custom_fields.color);
             }
           }
         });

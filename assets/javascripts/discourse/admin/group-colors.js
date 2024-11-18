@@ -28,7 +28,6 @@ export default Component.extend({
         group_ids: groupIds,
       });
 
-      // Update rank custom_field after reordering
       groups.forEach((group, index) => {
         this.ajax.put(`/admin/groups/${group.id}/custom_fields`, {
           rank: index + 1,

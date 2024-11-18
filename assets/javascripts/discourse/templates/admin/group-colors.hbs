@@ -28,13 +28,14 @@
     </label>
   </div>
 
-  {{#if this.model}}
+  {{#if groups}}
     <div class="groups-container">
       {{#sortable-group
         onChange=(action "reorderGroups")
         class="sortable-groups"
+        content=groups
       }}
-        {{#each this.model as |group|}}
+        {{#each groups as |group|}}
           {{#sortable-item model=group class="sortable-group"}}
             <div class="group-item">
               <div class="group-drag-handle">

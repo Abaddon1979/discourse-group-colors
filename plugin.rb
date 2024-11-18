@@ -1,15 +1,10 @@
-# name: discourse-group-colors
-# about: Colors usernames based on group membership with hover cards
-# version: 0.1.0
-# authors: Abaddon
-# url: https://github.com/Abaddon1979/discourse-group-colors
+# plugin.rb
 
 enabled_site_setting :group_colors_enabled
 
 register_asset "stylesheets/common/group-colors.scss"
 
 after_initialize do
-
   module ::GroupColors
     class Engine < ::Rails::Engine
       engine_name "group_colors"
@@ -36,7 +31,7 @@ after_initialize do
 
     def index
       render json: success_json.merge(
-        groups: Group.all,
+        groups: Group.all.map { |g| g.attributes.merge(custom_fields: g.custom_fields) },
         group_colors_enabled: SiteSetting.group_colors_enabled,
         group_colors_priority_enabled: SiteSetting.group_colors_priority_enabled
       )
