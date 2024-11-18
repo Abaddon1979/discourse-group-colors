@@ -1,0 +1,4 @@
+# settings.yml
+plugin_name: group colors
+group_colors_enabled: true
+group_colors_priority_enabled: true
