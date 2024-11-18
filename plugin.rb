@@ -10,41 +10,14 @@ register_asset 'stylesheets/group-colors.scss'
 register_svg_icon "fa-shield-halved"
 
 after_initialize do
-  module ::GroupColors
-    class GroupColorsSiteSetting
-      def self.values
-        Group.all.map { |g| { name: g.name, id: g.id } }
-      end
-
-      def self.valid_value?(val)
-        true
-      end
-    end
-  end
-
-  # Register custom site setting type
-  Site.preloaded_category_custom_fields << "group_colors"
-
-  class ::SiteSetting
-    class << self
-      def setup_deprecated_methods
-        super
-        class_eval <<~RUBY
-          def self.available_groups
-            ::GroupColors::GroupColorsSiteSetting.values
-          end
-        RUBY
-      end
-    end
-  end
-
   # Register custom fields for groups
   Group.register_custom_field_type('color', :string)
   Group.register_custom_field_type('color_rank', :integer)
 
+  # Add custom fields to serializer
   add_to_serializer(:basic_group, :color) { object.custom_fields['color'] }
   add_to_serializer(:basic_group, :color_rank) { object.custom_fields['color_rank'].to_i if object.custom_fields['color_rank'].present? }
-
+  
   # Add to user serializer to get the highest priority color
   add_to_serializer(:user, :group_color) do
     return nil unless SiteSetting.group_colors_enabled
@@ -82,10 +55,21 @@ after_initialize do
         render json: failed_json, status: 422
       end
     end
+
+    def list_groups
+      groups = Group.all.map { |g| {
+        id: g.id,
+        name: g.name,
+        color: g.custom_fields['color'],
+        rank: g.custom_fields['color_rank']
+      }}
+      render json: { groups: groups }
+    end
   end
 
   Discourse::Application.routes.append do
     put '/groups/:id/color' => 'groups#update_color'
+    get '/groups/list' => 'groups#list_groups'
   end
 
   # Initialize colors for existing groups if needed
@@ -101,6 +85,7 @@ after_initialize do
     end
   end
 
+  # Handle new group creation
   DiscourseEvent.on(:group_created) do |group|
     if SiteSetting.group_colors_enabled && group.custom_fields['color'].blank?
       group.custom_fields['color'] = "##{SecureRandom.hex(3)}"
