@@ -9,12 +9,14 @@ enabled_site_setting :group_colors_enabled
 register_asset 'stylesheets/group-colors.scss'
 register_svg_icon "fa-shield-halved"
 
+# Add the admin route
+add_admin_route 'group_colors.title', 'group-colors'
+
 after_initialize do
   # Register custom fields for groups
   Group.register_custom_field_type('color', :string)
   Group.register_custom_field_type('color_rank', :integer)
-
-  # Add custom fields to serializer
+  
   add_to_serializer(:basic_group, :color) { object.custom_fields['color'] }
   add_to_serializer(:basic_group, :color_rank) { object.custom_fields['color_rank'].to_i if object.custom_fields['color_rank'].present? }
   
@@ -26,10 +28,28 @@ after_initialize do
     return nil if groups.empty?
     
     if SiteSetting.group_colors_priority_enabled
+      # Sort by rank (lower number = higher priority)
       highest_priority_group = groups.min_by { |g| g.custom_fields['color_rank'].to_i || 999 }
       highest_priority_group.custom_fields['color']
     else
+      # If priority system disabled, just take first group with color
       groups.first.custom_fields['color']
+    end
+  end
+  
+  # Create GroupColorsController for admin interface
+  class ::Admin::GroupColorsController < Admin::AdminController
+    def index
+      render_json_dump(
+        groups: Group.all.map { |g| 
+          {
+            id: g.id,
+            name: g.name,
+            color: g.custom_fields['color'],
+            color_rank: g.custom_fields['color_rank']
+          }
+        }
+      )
     end
   end
 
@@ -55,21 +75,12 @@ after_initialize do
         render json: failed_json, status: 422
       end
     end
-
-    def list_groups
-      groups = Group.all.map { |g| {
-        id: g.id,
-        name: g.name,
-        color: g.custom_fields['color'],
-        rank: g.custom_fields['color_rank']
-      }}
-      render json: { groups: groups }
-    end
   end
 
+  # Add routes
   Discourse::Application.routes.append do
+    get '/admin/group-colors' => 'admin/group_colors#index'
     put '/groups/:id/color' => 'groups#update_color'
-    get '/groups/list' => 'groups#list_groups'
   end
 
   # Initialize colors for existing groups if needed
@@ -77,8 +88,9 @@ after_initialize do
     if name == :group_colors_enabled && new_value == true
       Group.where(automatic: false).find_each do |group|
         if group.custom_fields['color'].blank?
+          # Generate a random color if none exists
           group.custom_fields['color'] = "##{SecureRandom.hex(3)}"
-          group.custom_fields['color_rank'] = 999
+          group.custom_fields['color_rank'] = 999 # Default to lowest priority
           group.save_custom_fields(true)
         end
       end
@@ -89,7 +101,7 @@ after_initialize do
   DiscourseEvent.on(:group_created) do |group|
     if SiteSetting.group_colors_enabled && group.custom_fields['color'].blank?
       group.custom_fields['color'] = "##{SecureRandom.hex(3)}"
-      group.custom_fields['color_rank'] = 999
+      group.custom_fields['color_rank'] = 999 # Default to lowest priority
       group.save_custom_fields(true)
     end
   end

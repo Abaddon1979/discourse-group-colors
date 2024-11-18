@@ -5,17 +5,14 @@ plugins:
     default: true
     client: true
     type: bool
+    category: rank_colors
   group_colors_hover_enabled:
     default: true
     client: true
     type: bool
+    category: rank_colors
   group_colors_priority_enabled:
     default: true
     client: true
     type: bool
-  group_colors_ranks_and_colors:
-    type: composite
-    default: ''
-    client: true
-    refresh: true
-    preloaded_keys: groups
+    category: rank_colors
