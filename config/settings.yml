@@ -2,18 +2,17 @@
 
 plugins:
   group_colors_enabled:
-    type: bool
     default: true
     client: true
   group_colors_hover_enabled:
-    type: bool
     default: true
     client: true
   group_colors_priority_enabled:
-    type: bool
     default: true
     client: true
-  group_colors_list:
-    type: group_colors_list
+  group_colors_and_ranks:
+    type: enum
     default: ""
     client: true
+    choices: "available_groups"
+    list: true

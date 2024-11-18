@@ -1,6 +1,7 @@
 en:
   site_settings:
-    group_colors_enabled: "Enable colored usernames based on group membership"
-    group_colors_hover_enabled: "Enable hover cards for colored usernames"
-    group_colors_priority_enabled: "Enable priority system for group colors"
-    group_colors_list: "Group Colors and Rankings"
+    plugins:
+      group_colors_enabled: "Enable group color system"
+      group_colors_hover_enabled: "Enable hover cards for colored usernames"
+      group_colors_priority_enabled: "Enable priority system for group colors"
+      group_colors_and_ranks: "Group Colors and Rankings"
