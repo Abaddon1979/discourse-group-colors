@@ -1,5 +1,6 @@
 en:
   js:
     group_colors:
+      title: "Group Colors and Rankings"
+      description: "Drag to reorder groups. Lower ranks take priority when a user belongs to multiple groups. Set colors for each group."
       no_groups: "No groups found"
-      drag_to_sort: "Drag groups to set priority"
