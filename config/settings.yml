@@ -13,7 +13,3 @@ plugins:
     type: bool
     default: true
     client: true
-  group_colors_and_ranks:
-    type: group_colors_list
-    default: ''
-    client: true
