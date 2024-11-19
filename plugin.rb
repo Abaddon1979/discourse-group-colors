@@ -4,8 +4,6 @@
 # authors: Abaddon
 # url: https://github.com/Abaddon1979/discourse-group-colors
 
-# plugin.rb
-
 enabled_site_setting :group_colors_enabled
 
 register_asset "stylesheets/common/group-colors.scss"
@@ -34,13 +32,10 @@ after_initialize do
 
   class ::GroupColors::GroupColorsController < ::ApplicationController
     requires_plugin "group_colors"
-
     before_action :ensure_admin
 
     def index
-      render inline: "<%= require_dependency 'group_colors/admin/group_colors' %>",
-             type: :erb,
-             layout: 'admin'
+      # No need for inline ERB. Let Discourse handle template rendering.
     end
 
     def reorder
