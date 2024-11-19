@@ -38,11 +38,9 @@ after_initialize do
     before_action :ensure_admin
 
     def index
-      render json: success_json.merge(
-        groups: Group.all.map { |g| g.attributes.merge(custom_fields: g.custom_fields) },
-        group_colors_enabled: SiteSetting.group_colors_enabled,
-        group_colors_priority_enabled: SiteSetting.group_colors_priority_enabled
-      )
+      render inline: "<%= require_dependency 'group_colors/admin/group_colors' %>",
+             type: :erb,
+             layout: 'admin'
     end
 
     def reorder
