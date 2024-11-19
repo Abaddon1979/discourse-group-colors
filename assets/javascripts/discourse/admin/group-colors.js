@@ -8,8 +8,8 @@ export default  
  Component.extend({
   ajax: service(),
 
-  groupColorsEnabled: false,
-  groupColorsPriorityEnabled: false,
+  groupColorsEnabled: true,
+  groupColorsPriorityEnabled: true,
 
   init() {
     this._super(...arguments);
