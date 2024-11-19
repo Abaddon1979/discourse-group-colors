@@ -1,8 +1,9 @@
 # settings.yml
-Plugins:
-  group_colors_enabled:
-    default: true
-    client: true
-  group_colors_priority_enabled:
-    default: true
-    client: true
+plugins:
+  group_colors:
+    group_colors_enabled:
+      default: true
+      client: true
+    group_colors_priority_enabled:
+      default: true
+      client: true
