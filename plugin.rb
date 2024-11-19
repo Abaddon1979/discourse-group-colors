@@ -4,6 +4,8 @@
 # authors: Abaddon
 # url: https://github.com/Abaddon1979/discourse-group-colors
 
+# plugin.rb
+
 enabled_site_setting :group_colors_enabled
 
 register_asset "stylesheets/common/group-colors.scss"
